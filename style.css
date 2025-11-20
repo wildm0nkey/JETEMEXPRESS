@@ -489,3 +489,33 @@ input::placeholder {
     text-align: center;
   }
 }
+
+
+/* Стили для новых полей */
+.item-input {
+  margin-bottom: 12px;
+}
+
+.size-input {
+  margin-bottom: 8px;
+}
+
+/* Улучшенные стили для формы */
+.form-section {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Адаптивность для новых полей */
+@media (max-width: 480px) {
+  .form-section {
+    padding: 12px;
+  }
+}
