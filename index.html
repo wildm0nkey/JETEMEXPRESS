@@ -29,10 +29,7 @@ const i18n = {
     step1: 'Заполните форму и рассчитайте стоимость',
     step2: 'Нажмите кнопку отправки',
     step3: 'Все данные автоматически перейдут в WhatsApp',
-    step4: 'Подтвердите заказ в чате с оператором',
-    coordinates: 'Координаты',
-    fromCoords: 'Координаты точки A',
-    toCoords: 'Координаты точки B'
+    step4: 'Подтвердите заказ в чате с оператором'
   },
   kz: {
     orderTitle: 'Тапсырыс беру',
@@ -56,10 +53,7 @@ const i18n = {
     step1: 'Форманы толтырып, құнды есептеңіз',
     step2: 'Жіберу түймесін басыңыз',
     step3: 'Барлық деректер WhatsApp-ке автоматты түрде ауысады',
-    step4: 'Оператормен сөйлесуде тапсырысты растаңыз',
-    coordinates: 'Координаталар',
-    fromCoords: 'А нүктесінің координаталары',
-    toCoords: 'B нүктесінің координаталары'
+    step4: 'Оператормен сөйлесуде тапсырысты растаңыз'
   }
 };
 
@@ -162,21 +156,6 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// --- Функции для работы с координатами ---
-function formatCoordinates(lat, lng, precision = 6) {
-  const latDir = lat >= 0 ? 'N' : 'S';
-  const lngDir = lng >= 0 ? 'E' : 'W';
-  return `${Math.abs(lat).toFixed(precision)}°${latDir}, ${Math.abs(lng).toFixed(precision)}°${lngDir}`;
-}
-
-function createGoogleMapsLink(lat, lng) {
-  return `https://www.google.com/maps?q=${lat},${lng}`;
-}
-
-function createOsmLink(lat, lng) {
-  return `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=17/${lat}/${lng}`;
-}
-
 // --- Автозаполнение адресов ---
 async function setAddressFromMarker(marker, inputId) {
   const latlng = marker.getLatLng();
@@ -266,7 +245,7 @@ document.getElementById('photo').addEventListener('change', function(e) {
   }
 });
 
-// --- Улучшенная функция формирования сообщения для WhatsApp ---
+// --- Формирование сообщения для WhatsApp ---
 function generateWhatsAppMessage() {
   const fromAddress = document.getElementById('fromAddress').value.trim();
   const toAddress = document.getElementById('toAddress').value.trim();
@@ -280,38 +259,22 @@ function generateWhatsAppMessage() {
   const size = document.getElementById('size').value.trim();
   
   const priceInfo = calculatePrice();
-  const a = markerA.getLatLng();
-  const b = markerB.getLatLng();
-  
-  const t = i18n[currentLang];
   
   let message = `🚚 *НОВЫЙ ЗАКАЗ JETEM EXPRESS* 🚚\n\n`;
   
-  message += `📍 *${t.fromLabel.toUpperCase()}:*\n`;
+  message += `📍 *ОТКУДА:*\n`;
   message += `${fromAddress}`;
   if (fromHouse) message += `, д. ${fromHouse}`;
   if (fromApt) message += `, кв. ${fromApt}`;
   if (fromFloor) message += `, ${fromFloor} этаж`;
-  message += `\n`;
+  message += `\n\n`;
   
-  // Координаты точки A
-  message += `*${t.fromCoords}:*\n`;
-  message += `${formatCoordinates(a.lat, a.lng)}\n`;
-  message += `Google Maps: ${createGoogleMapsLink(a.lat, a.lng)}\n`;
-  message += `OpenStreetMap: ${createOsmLink(a.lat, a.lng)}\n\n`;
-  
-  message += `🎯 *${t.toLabel.toUpperCase()}:*\n`;
+  message += `🎯 *КУДА:*\n`;
   message += `${toAddress}`;
   if (toHouse) message += `, д. ${toHouse}`;
   if (toApt) message += `, кв. ${toApt}`;
   if (toFloor) message += `, ${toFloor} этаж`;
-  message += `\n`;
-  
-  // Координаты точки B
-  message += `*${t.toCoords}:*\n`;
-  message += `${formatCoordinates(b.lat, b.lng)}\n`;
-  message += `Google Maps: ${createGoogleMapsLink(b.lat, b.lng)}\n`;
-  message += `OpenStreetMap: ${createOsmLink(b.lat, b.lng)}\n\n`;
+  message += `\n\n`;
   
   message += `📞 *ТЕЛЕФОН:* ${phone}\n\n`;
   
@@ -320,55 +283,13 @@ function generateWhatsAppMessage() {
   }
   
   if (priceInfo) {
-    message += `💰 *СТОИМОСТЬ ДОСТАВКИ:* ${priceInfo.price} ₸\n`;
+    message += `💰 *СТОИМОСТЬ:* ${priceInfo.price} ₸\n`;
     message += `📏 *РАССТОЯНИЕ:* ${priceInfo.km.toFixed(2)} км\n\n`;
   }
   
-  // Информация о файлах
-  const files = document.getElementById('photo').files;
-  if (files.length > 0) {
-    message += `📷 *ПРИЛОЖЕНО ФОТО:* ${files.length} файл(ов)\n\n`;
-  }
-  
-  message += `📍 *ЦЕНТР ЗОНЫ ОБСЛУЖИВАНИЯ:*\n`;
-  message += `${formatCoordinates(KONAEV_CENTER.lat, KONAEV_CENTER.lng)}\n\n`;
-  
-  message += `_Заказ создан через сайт • ${new Date().toLocaleString('ru-RU')}_`;
+  message += `_Заказ создан через сайт_`;
   
   return encodeURIComponent(message);
-}
-
-// --- Функция для быстрого копирования координат ---
-function setupCoordinateCopy() {
-  // Добавляем обработчики для быстрого копирования координат
-  markerA.on('click', function() {
-    const coords = markerA.getLatLng();
-    const coordText = `${formatCoordinates(coords.lat, coords.lng)}`;
-    copyToClipboard(coordText);
-    showTempPopup(markerA, 'Координаты скопированы!');
-  });
-  
-  markerB.on('click', function() {
-    const coords = markerB.getLatLng();
-    const coordText = `${formatCoordinates(coords.lat, coords.lng)}`;
-    copyToClipboard(coordText);
-    showTempPopup(markerB, 'Координаты скопированы!');
-  });
-}
-
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    console.log('Координаты скопированы: ', text);
-  }).catch(err => {
-    console.error('Ошибка копирования: ', err);
-  });
-}
-
-function showTempPopup(marker, message) {
-  marker.bindPopup(message).openPopup();
-  setTimeout(() => {
-    marker.closePopup();
-  }, 2000);
 }
 
 // --- Отправка в WhatsApp ---
@@ -412,26 +333,9 @@ document.getElementById('sendOrder').addEventListener('click', () => {
 // --- Инициализация ---
 applyLang();
 calculatePrice();
-setupCoordinateCopy();
 
 // Устанавливаем начальные адреса
 setTimeout(() => {
   setAddressFromMarker(markerA, 'fromAddress');
   setAddressFromMarker(markerB, 'toAddress');
 }, 1000);
-
-// Добавляем информацию о координатах в интерфейс
-function addCoordinatesInfo() {
-  const mapHeader = document.querySelector('.map-header');
-  const coordsInfo = document.createElement('div');
-  coordsInfo.className = 'coords-info';
-  coordsInfo.innerHTML = `
-    <div style="font-size: 11px; color: #64748b; margin-top: 4px;">
-      🔍 Нажмите на маркер чтобы скопировать координаты
-    </div>
-  `;
-  mapHeader.appendChild(coordsInfo);
-}
-
-// Инициализируем дополнительную информацию
-setTimeout(addCoordinatesInfo, 500);
