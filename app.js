@@ -3,7 +3,7 @@ const KONAEV_CENTER = {lat: 43.865, lng: 77.053};
 const SERVICE_RADIUS_KM = 10;
 const RATE_PER_BLOCK = 600;
 const BLOCK_KM = 2;
-const WHATSAPP_NUMBER = '77471943102';
+const WHATSAPP_NUMBER = '77473522909'';
 
 // --- Локализация ---
 const i18n = {
