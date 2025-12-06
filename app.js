@@ -348,14 +348,12 @@ function setupCoordinateCopy() {
     const coords = markerA.getLatLng();
     const coordText = formatCoordinates(coords.lat, coords.lng);
     copyToClipboard(coordText);
-    showTempPopup(markerA, 'Координаты скопированы!');
   });
   
   markerB.on('click', function() {
     const coords = markerB.getLatLng();
     const coordText = formatCoordinates(coords.lat, coords.lng);
     copyToClipboard(coordText);
-    showTempPopup(markerB, 'Координаты скопированы!');
   });
 }
 
@@ -422,7 +420,7 @@ function addCoordinatesInfo() {
     <div><strong>🟢 Точка A:</strong> <span id="coordsA">${formatCoordinates(markerA.getLatLng().lat, markerA.getLatLng().lng)}</span></div>
     <div><strong>🔴 Точка B:</strong> <span id="coordsB">${formatCoordinates(markerB.getLatLng().lat, markerB.getLatLng().lng)}</span></div>
     <div style="font-size: 10px; color: #64748b; margin-top: 4px;">
-      🔍 Нажмите на маркер чтобы скопировать координаты
+      🔍 зажмите маркер и выберите координаты 
     </div>
   `;
   mapContainer.insertBefore(coordsInfo, document.getElementById('map'));
