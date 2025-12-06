@@ -53,6 +53,11 @@
             <input id="fromFloor" type="number" min="0" placeholder="Этаж">
           </div>
         </div>
+        
+        <!-- Имя отправителя -->
+        <div style="margin-top: 12px;">
+          <input id="senderName" type="text" placeholder="Имя отправителя (необязательно)" style="width: 100%;">
+        </div>
       </div>
 
       <!-- To Address -->
@@ -71,21 +76,23 @@
             <input id="toFloor" type="number" min="0" placeholder="Этаж">
           </div>
         </div>
+        
+        <!-- Имя получателя -->
+        <div style="margin-top: 12px;">
+          <input id="receiverName" type="text" placeholder="Имя получателя (необязательно)" style="width: 100%;">
+        </div>
       </div>
 
       <!-- Package Info -->
       <div class="form-section">
         <label class="lbl">📦 Информация о товаре</label>
+        <!-- Название товара -->
+        <input id="productName" type="text" placeholder="Название товара (например: Документы, Еда, Одежда)" 
+               style="width: 100%; margin-bottom: 12px;">
+        
         <input id="size" type="text" placeholder="Размеры (например: 50×40×30 см)" class="size-input">
         
-        <div class="file-upload">
-          <label for="photo" class="file-label">
-            <span class="file-icon">📷</span>
-            <span class="file-text">Добавить фото товара</span>
-          </label>
-          <input id="photo" type="file" accept="image/*" multiple>
-          <div id="fileNames" class="file-names"></div>
-        </div>
+        <!-- Убрана секция загрузки фото -->
       </div>
 
       <!-- Contact -->
