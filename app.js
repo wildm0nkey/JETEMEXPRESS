@@ -29,7 +29,7 @@ const i18n = {
     senderPlaceholder: 'Имя отправителя (необязательно)',
     receiverPlaceholder: 'Имя получателя (необязательно)',
     phonePlaceholder: '+7 7xx xxx xx xx',
-    actionNote: 'Нажмите чтобы отправить все данные в WhatsApp',
+    actionNote: 'Нажмите чтобы создать заказ',
     instructions: 'Как это работает:',
     step1: 'Заполните форму и рассчитайте стоимость',
     step2: 'Нажмите кнопку отправки',
